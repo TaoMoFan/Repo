@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vuestudy</title>
+	</head>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<body>
+		<div id="laowang">
+			<span>这里是父组件</span>
+			<br>
+			<input type="text" v-model="message">
+				<span>{{message}}</span>
+				<br>
+			<span>这里是子组件</span>
+			<xiaoming :abcdefg = "message" @xiaomingclick="zhangsanOn">
+				<xiaozhang slot="A"></xiaozhang>
+				<xiaowang slot="B"></xiaowang>
+			</xiaoming>
+		</div>
+		<script type="text/javascript">
+			Vue.component("xiaoming",{
+				template: '<div>\
+				<input type="text" v-model="xiaomingMessage">\
+				<button @click="click">开始</button>\
+				<br>\
+				<span>这里是子组件的插槽</span>\
+				<slot :name="abcdefg"></slot>\
+				</div>',
+				 props: ['abcdefg'],
+				 data() {
+				 	return {
+				 		xiaomingMessage: ''
+				 	}
+				 },
+				 methods: {
+				 	click: function(){
+				 		this.$emit('xiaomingclick',this.xiaomingMessage)
+				 	}
+				 }
+			})
+			Vue.component("xiaozhang",{
+				template: '<div>xiaozhang</div>'
+			})
+			Vue.component("xiaowang",{
+				template: '<div>xiaowang</div>'
+			})
+		var zhangsan = new Vue({
+			el: '#laowang',
+			data: {
+				message: 'Hello Vue',
+			},
+			methods:　{
+				zhangsanOn: function(xiaomingMessage){
+					this.message = xiaomingMessage;
+				}
+			}
+		})
+	</script>
+	</body>
+</html>
